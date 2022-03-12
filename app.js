@@ -132,7 +132,7 @@ const employeeView = async () => {
     }
 };
 
-// add a department
+// add an employee
 
 const employeeAdd = async () => {
     console.log("Add Employee");
@@ -177,3 +177,78 @@ const employeeAdd = async () => {
         startDatabase();
     };
 };
+
+const departmentAdd = async () => {
+    try {
+        console.log('Add Department');
+
+        let answer = await inquirer.prompt([
+            {
+                name: 'departmentName',
+                type: 'input',
+                message: 'What is the name of the new department? (Required)'
+            }
+        ]);
+
+        let result = await connection.query("INSERT INTO department SET ?", {
+            department_name: answer.departmentName
+        });
+
+        console.log(`The ${answer.departmentName} department has been added to the tracker.`)
+        startDatabase();
+
+    } catch (err) {
+        console.log(err);
+        startDatabase();
+    };
+};
+
+const roleAdd = async () => {
+    try {
+        console.log('Add Role');
+
+        let answer = await inquirer.prompt([
+            {
+                name: 'roleName',
+                type: 'input',
+                message: 'What is the title of the new role? (Required)'
+            },
+            {
+                name: 'salaryTotal',
+                type:'input',
+                message: 'What is the salary for the new role? (Required)'
+            },
+           {
+                name: 'departmentId',
+                type: 'list',
+                choices: departments.map((departmentId) => {
+                    return {
+                        name: departmentId.department_name,
+                        value: departmentId.id
+                    }
+                }),
+                message: 'What department ID is this role associated with?',
+            }
+        ]);
+        
+        let chosenDepartment;
+        for (i = 0; i < departments.length; i++) {
+            if(departments[i].department_id === answer.choice) {
+                chosenDepartment = departments[i];
+            };
+        }
+        let result = await connection.query("INSERT INTO role SET ?", {
+            title: answer.title,
+            salary: answer.salary,
+            department_id: answer.departmentId
+        })
+
+        console.log(`The ${answer.title} role has been added to the tracker.`)
+        initialAction();
+
+    } catch (err) {
+        console.log(err);
+        initialAction();
+    };
+}
+   
