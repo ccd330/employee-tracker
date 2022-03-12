@@ -53,16 +53,16 @@ const startDatabase = async () => {
                 employeeView();
                 break;
 
+            case "Add An Employee":
+                employeeAdd();
+                break;
+
             case "Add A Department":
                 departmentAdd();
                 break;
             
             case "Add A Role":
                 roleAdd();
-                break;
-            
-            case "Add An Employee":
-                employeeAdd();
                 break;
 
             case "Update An Employee Role":
@@ -77,4 +77,103 @@ const startDatabase = async () => {
         console.log(err);
         startDatabase();
     }
-}
+};
+//view all departments
+const departmentView = async () => {
+    console.log('Department View');
+    try {
+        let query = 'SELECT * FROM department';
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            let departmentArray = [];
+            res.forEach(department => departmentArray.push(department));
+            console.table(departmentArray);
+            startDatabase();
+        });
+    } catch (err) {
+        console.log(err);
+        startDatabase();
+    }
+};
+
+//view all roles 
+const roleView = async () => {
+    console.log('Role View');
+    try {
+        let query = 'SELECT * FROM role';
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            let roleArray = [];
+            res.forEach(role => roleArray.push(role));
+            console.table(roleArray);
+            startDatabase();
+        });
+    } catch (err) {
+        console.log(err);
+        startDatabase();
+    }
+};
+
+//view all employees
+const employeeView = async () => {
+    console.log('Employee View');
+    try {
+        let query = 'SELECT * FROM employee';
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            let employeeArray = [];
+            res.forEach(employee => employeeArray.push(employee));
+            console.table(employeeArray);
+            startDatabase();
+        });
+    } catch (err) {
+        console.log(err);
+        startDatabase();
+    }
+};
+
+// add a department
+
+const employeeAdd = async () => {
+    console.log("Add Employee");
+    try {
+        let roles = await connection.query("SELECT * FROM role");
+        let managers = await connection.query('SELECT * FROM employee')
+        let answer = await inquirer.prompt ([
+            {
+                name: 'firstName',
+                type: 'input',
+                message: "What is the employee's first name? (Required)"
+            },
+            {
+                name: 'lastName',
+                type: 'input',
+                message: "What is the employee's last name? (Required)"
+            },
+            {
+                name: 'roleId',
+                type: 'input',
+                message: "What is the employee's role ID? (Required)"
+            },
+            {
+                name: 'managerId',
+                type: 'input',
+                message: "What is the employee's manager's ID?"
+            }
+        ])
+
+        let result = await connection.query("INSERT INTO employee SET ?", {
+            first_name: answer.firstName,
+            last_name: answer.lastName,
+            role_id: (answer.roleId),
+            manager_id: (answer.managerId)
+        });
+
+        console.log(`${answer.firstName} ${answer.lastName} has been added to the tracker.`);
+        startDatabase();
+
+    }   catch (err) {
+        console.log(err);
+        startDatabase();
+    };
+};
