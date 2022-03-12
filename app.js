@@ -2,8 +2,6 @@ const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 const util = require('util');
-const { isAsyncFunction } = require('util/types');
-const { start } = require('repl');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -133,7 +131,6 @@ const employeeView = async () => {
 };
 
 // add an employee
-
 const employeeAdd = async () => {
     console.log("Add Employee");
     try {
@@ -178,6 +175,7 @@ const employeeAdd = async () => {
     };
 };
 
+// add a department
 const departmentAdd = async () => {
     try {
         console.log('Add Department');
@@ -203,6 +201,7 @@ const departmentAdd = async () => {
     };
 };
 
+//add a role
 const roleAdd = async () => {
     try {
         console.log('Add Role');
@@ -251,4 +250,53 @@ const roleAdd = async () => {
         initialAction();
     };
 }
+
+//update employee information 
+
+const employeeUpdate = async () => {
+    try {
+        console.log("Update Employee Information");
+
+        let employees = await connection.query("SELECT * FROM employee")
+
+        let employeeChoice = await inquirer.prompt ([
+            {
+                name: 'employee',
+                type: 'list',
+                choices: employees.map((employeeName) => {
+                    return {
+                        name: employeeName.first_name + " " + employeeName.last_name,
+                        value: employeeName.id
+                    }
+                }),
+                message: 'Please choose an employee to update.'
+            }
+        ]);
+
+         let roles = await connection.query('SELECT * FROM role')
+
+         let roleChoice = await inquirer.prompt ([
+             {
+                 name: 'role',
+                 type: 'list',
+                 choices: roles.map((roleName) => {
+                     return {
+                         name: roleName.title,
+                         value: roleName.id
+                     }
+                 }),
+                 message: 'Please select the role with which to update the employee'
+             }
+         ]);
+
+         let result = await connection.query("UPDATE employee SET ? WHERE ?", [{ role_id: roleChoice.role }, { id: employeeChoice.employee }]);
+         
+         console.log("The employee has been updated in the tracker");
+         startDatabase
+    
+    }    catch (err){
+        console.log(err);
+        startDatabase();
+    }
+};
    
