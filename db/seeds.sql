@@ -1,10 +1,10 @@
-INSERT INTO department (name)
+INSERT INTO department (department_name)
 VALUES ('accounting')
-INSERT INTO department (name)
+INSERT INTO department (department_name)
 VALUES ('sales')
-INSERT INTO department (name)
+INSERT INTO department (department_name)
 VALUES ('marketing')
-INSERT INTO department (name)
+INSERT INTO department (department_name)
 VALUES ('operations')
 
 INSERT INTO role (title, salary, department_id)
@@ -40,3 +40,5 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ('Maria', 'Hill', '2', null),
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ('Nick', 'Fury', '3', null);
+
+
