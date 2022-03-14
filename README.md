@@ -17,6 +17,8 @@
 
   ## Description
   The employee tracker is an SQL databases that tracks employees, departments, and more.
+  
+  <img src= "https://github.com/ccd330/employee-tracker/blob/main/employee_tracker_demo.png" />
 
   ## Installation Instructions
   Please use "npm install inquirer mysql2 console.table --save"
