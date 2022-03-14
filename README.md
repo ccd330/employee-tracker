@@ -22,7 +22,7 @@
   Please use "npm install inquirer mysql2 console.table --save"
 
   ## Usage
-  Before launching application, ensure dependencies are installed and you are in the root directory.
+  Before launching application, ensure dependencies are installed and you are in the root directory. Please see walkthrough video of the application here: https://drive.google.com/file/d/1lfpPV74lc1TZFkFmNU262ckyN9nXZ3U1/view?usp=sharing
 
   ## Contributions
   This project was created by Claudia (ccd330).
