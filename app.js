@@ -64,7 +64,7 @@ const startDatabase = async () => {
                 addRole();
                 break
 
-            case 'Update Employee':
+            case 'Update Employee Role':
                 updateEmployee();
                 break
 
